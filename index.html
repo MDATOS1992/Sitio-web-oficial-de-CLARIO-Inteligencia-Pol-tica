@@ -1,155 +1,676 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>CLARIO — Inteligencia Política</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: #F0F4F8; color: #001D39; font-family: 'Inter', sans-serif; padding: 40px; margin: 0; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CLARIO — Inteligencia Política</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; }
 
-    .header { margin-bottom: 32px; }
-    .logo { font-size: 28px; font-weight: 700; letter-spacing: 4px; color: #001D39; display: flex; align-items: center; gap: 8px; }
-    .punto { color: #1D9E75; font-size: 20px; }
-    .subtitulo { font-size: 11px; letter-spacing: 3px; color: #49769F; margin-top: 4px; }
-    .bienvenida { margin-top: 16px; }
-    .bienvenida h2 { font-size: 22px; font-weight: 700; color: #001D39; }
-    .bienvenida p { font-size: 13px; color: #49769F; margin-top: 4px; }
+  :root {
+    --negro: #0D1117;
+    --negro2: #111827;
+    --verde: #1D9E75;
+    --verde-claro: #1D9E7520;
+    --blanco: #F1EFE8;
+    --gris: #6B7280;
+    --azul-oscuro: #001D39;
+    --azul-medio: #49769F;
+    --azul-claro: #BDD8E9;
+    --rojo: #EF4444;
+  }
 
-    .seccion-titulo { font-size: 11px; letter-spacing: 3px; color: #49769F; margin: 32px 0 16px 0; text-transform: uppercase; font-weight: 600; }
+  html { font-size: 16px; }
 
-    .numeros { display: flex; gap: 20px; margin-bottom: 8px; }
-    .card { background: #FFFFFF; border-radius: 12px; padding: 24px 28px; flex: 1; box-shadow: 0 2px 8px rgba(0,29,57,0.08); }
-    .card .numero { font-size: 44px; font-weight: 700; }
-    .card .label { font-size: 12px; color: #49769F; margin-top: 6px; font-weight: 500; }
-    .card .tendencia { font-size: 11px; margin-top: 8px; font-weight: 500; }
-    .positivo { color: #1D9E75; }
-    .negativo { color: #e05555; }
-    .neutro { color: #49769F; }
+  body {
+    background: var(--negro);
+    color: var(--blanco);
+    font-family: 'Inter', Helvetica, sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
 
-    .grafico-card { background: #FFFFFF; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,29,57,0.08); margin-bottom: 20px; }
-    .grafico-card img { width: 100%; border-radius: 8px; }
+  /* ======= NAV ======= */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 60px;
+    background: rgba(13,17,23,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(29,158,117,0.15);
+  }
 
-    .dos-columnas { display: flex; gap: 20px; }
-    .dos-columnas .grafico-card { flex: 1; margin-bottom: 0; }
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+  }
 
-    .analisis-card { background: #FFFFFF; border-radius: 12px; padding: 32px; box-shadow: 0 2px 8px rgba(0,29,57,0.08); margin-bottom: 20px; }
-    .analisis-card p { font-size: 15px; line-height: 1.8; color: #001D39; margin-bottom: 16px; }
-    .analisis-card p:last-child { margin-bottom: 0; }
+  .nav-logo .punto { color: var(--verde); font-size: 18px; font-weight: 700; }
+  .nav-logo .nombre { color: var(--blanco); font-size: 18px; font-weight: 700; letter-spacing: 3px; }
+  .nav-logo .sub { color: var(--verde); font-size: 9px; letter-spacing: 2px; display: block; margin-top: 1px; }
 
-    .tabla-card { background: #FFFFFF; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,29,57,0.08); margin-top: 20px; }
-    table { width: 100%; border-collapse: collapse; font-size: 13px; }
-    thead tr { border-bottom: 2px solid #F0F4F8; }
-    thead th { text-align: left; padding: 10px 14px; font-size: 11px; letter-spacing: 2px; color: #49769F; font-weight: 600; text-transform: uppercase; }
-    tbody tr { border-bottom: 1px solid #F0F4F8; transition: background 0.2s; }
-    tbody tr:hover { background: #F7FAFC; }
-    tbody td { padding: 12px 14px; color: #001D39; vertical-align: middle; }
-    .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
-    .badge-positivo { background: #E6F7F2; color: #1D9E75; }
-    .badge-negativo { background: #FDE8E8; color: #e05555; }
-    .badge-neutro { background: #EAF0F6; color: #49769F; }
-    .badge-alto { background: #001D39; color: #FFFFFF; }
-    .badge-medio { background: #49769F; color: #FFFFFF; }
-    .badge-bajo { background: #BDD8E9; color: #001D39; }
-    .medio-tag { font-size: 11px; color: #49769F; font-weight: 500; }
-  </style>
+  .nav-links { display: flex; align-items: center; gap: 32px; }
+  .nav-links a { color: var(--gris); text-decoration: none; font-size: 13px; font-weight: 500; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--verde); }
+
+  .nav-cta {
+    background: var(--verde);
+    color: var(--negro) !important;
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-weight: 700 !important;
+    font-size: 13px !important;
+    transition: opacity 0.2s !important;
+  }
+  .nav-cta:hover { opacity: 0.85; }
+
+  /* ======= HERO ======= */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 140px 60px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(29,158,117,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(29,158,117,0.1);
+    border: 1px solid rgba(29,158,117,0.3);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 12px;
+    color: var(--verde);
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 32px;
+    width: fit-content;
+  }
+
+  .hero-tag::before { content: '●'; font-size: 8px; }
+
+  .hero h1 {
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--blanco);
+    max-width: 800px;
+    margin-bottom: 24px;
+  }
+
+  .hero h1 span { color: var(--verde); }
+
+  .hero-sub {
+    font-size: 18px;
+    color: var(--gris);
+    max-width: 560px;
+    margin-bottom: 48px;
+    line-height: 1.7;
+  }
+
+  .hero-ctas { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+
+  .btn-primary {
+    background: var(--verde);
+    color: var(--negro);
+    padding: 16px 32px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 15px;
+    text-decoration: none;
+    transition: opacity 0.2s, transform 0.2s;
+    display: inline-block;
+  }
+  .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+
+  .btn-secondary {
+    color: var(--gris);
+    font-size: 14px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s;
+  }
+  .btn-secondary:hover { color: var(--blanco); }
+  .btn-secondary::after { content: '→'; }
+
+  .hero-dato {
+    margin-top: 80px;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    padding-top: 40px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    flex-wrap: wrap;
+  }
+
+  .dato-item { text-align: left; }
+  .dato-numero { font-size: 36px; font-weight: 800; color: var(--verde); line-height: 1; }
+  .dato-label { font-size: 12px; color: var(--gris); margin-top: 4px; max-width: 140px; }
+  .dato-sep { width: 1px; height: 40px; background: rgba(255,255,255,0.1); }
+
+  /* ======= SECCIÓN PROBLEMA ======= */
+  .seccion {
+    padding: 100px 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .sec-tag {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: var(--verde);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .sec-titulo {
+    font-size: clamp(28px, 3vw, 44px);
+    font-weight: 700;
+    color: var(--blanco);
+    line-height: 1.2;
+    margin-bottom: 20px;
+    max-width: 700px;
+  }
+
+  .sec-sub {
+    font-size: 16px;
+    color: var(--gris);
+    max-width: 560px;
+    line-height: 1.7;
+    margin-bottom: 60px;
+  }
+
+  /* ======= DATO VISUAL ======= */
+  .dato-visual {
+    background: var(--negro2);
+    border: 1px solid rgba(29,158,117,0.2);
+    border-radius: 16px;
+    padding: 48px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+
+  .dato-big { font-size: 96px; font-weight: 800; color: var(--verde); line-height: 1; margin-bottom: 12px; }
+  .dato-desc { font-size: 20px; color: var(--blanco); font-weight: 600; margin-bottom: 8px; line-height: 1.3; }
+  .dato-note { font-size: 13px; color: var(--gris); line-height: 1.5; }
+
+  .barras-visual { display: flex; flex-direction: column; gap: 20px; }
+  .barra-item {}
+  .barra-header { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; }
+  .barra-nombre { color: var(--blanco); }
+  .barra-pct { font-weight: 700; }
+  .barra-track { height: 10px; background: rgba(255,255,255,0.05); border-radius: 5px; overflow: hidden; }
+  .barra-fill { height: 100%; border-radius: 5px; transition: width 1s ease; }
+
+  /* ======= PRODUCTO ======= */
+  .producto-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 60px;
+  }
+
+  .producto-card {
+    background: var(--negro2);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 28px;
+    transition: border-color 0.3s;
+  }
+  .producto-card:hover { border-color: rgba(29,158,117,0.4); }
+
+  .prod-icon { font-size: 28px; margin-bottom: 16px; }
+  .prod-titulo { font-size: 15px; font-weight: 700; color: var(--blanco); margin-bottom: 8px; }
+  .prod-desc { font-size: 13px; color: var(--gris); line-height: 1.6; }
+
+  /* ======= DEMO DASHBOARD ======= */
+  .demo-wrapper {
+    background: var(--negro2);
+    border: 1px solid rgba(29,158,117,0.2);
+    border-radius: 16px;
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .demo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .demo-titulo { font-size: 14px; font-weight: 600; color: var(--blanco); }
+  .demo-badge {
+    background: rgba(29,158,117,0.15);
+    border: 1px solid rgba(29,158,117,0.3);
+    color: var(--verde);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
+
+  .demo-kpis {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .demo-kpi {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .demo-kpi-label { font-size: 10px; color: var(--gris); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+  .demo-kpi-valor { font-size: 28px; font-weight: 800; }
+
+  .demo-blur {
+    filter: blur(6px);
+    opacity: 0.4;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .demo-overlay {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 200px;
+    background: linear-gradient(to top, var(--negro2) 40%, transparent);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 32px;
+  }
+
+  /* ======= CASO ======= */
+  .caso-card {
+    background: var(--negro2);
+    border: 1px solid rgba(29,158,117,0.2);
+    border-radius: 16px;
+    padding: 48px;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 48px;
+    align-items: start;
+  }
+
+  .caso-meta { border-right: 1px solid rgba(255,255,255,0.06); padding-right: 48px; }
+  .caso-tag { font-size: 10px; font-weight: 700; letter-spacing: 2px; color: var(--verde); text-transform: uppercase; margin-bottom: 16px; }
+  .caso-nombre { font-size: 22px; font-weight: 700; color: var(--blanco); margin-bottom: 8px; }
+  .caso-periodo { font-size: 13px; color: var(--gris); margin-bottom: 24px; }
+  .caso-stat { margin-bottom: 16px; }
+  .caso-stat-num { font-size: 36px; font-weight: 800; color: var(--verde); line-height: 1; }
+  .caso-stat-label { font-size: 12px; color: var(--gris); margin-top: 2px; }
+
+  .caso-contenido {}
+  .caso-frase {
+    font-size: 18px;
+    color: var(--blanco);
+    line-height: 1.7;
+    margin-bottom: 24px;
+    font-style: italic;
+    border-left: 3px solid var(--verde);
+    padding-left: 20px;
+  }
+  .caso-texto { font-size: 14px; color: var(--gris); line-height: 1.8; margin-bottom: 16px; }
+
+  /* ======= CONTACTO ======= */
+  .contacto-section {
+    background: var(--negro2);
+    border-top: 1px solid rgba(29,158,117,0.15);
+    padding: 100px 60px;
+  }
+
+  .contacto-inner {
+    max-width: 640px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .contacto-inner .sec-titulo { margin: 0 auto 16px; text-align: center; }
+  .contacto-inner .sec-sub { margin: 0 auto 48px; text-align: center; }
+
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+
+  .form-input {
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 14px 16px;
+    color: var(--blanco);
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-input:focus { border-color: var(--verde); }
+  .form-input::placeholder { color: var(--gris); }
+
+  .form-input-full { grid-column: 1 / -1; }
+
+  .form-submit {
+    width: 100%;
+    background: var(--verde);
+    color: var(--negro);
+    border: none;
+    padding: 16px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    margin-top: 8px;
+  }
+  .form-submit:hover { opacity: 0.88; }
+
+  .form-nota { font-size: 12px; color: var(--gris); margin-top: 12px; }
+
+  /* ======= FOOTER ======= */
+  footer {
+    padding: 32px 60px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .footer-logo { display: flex; align-items: center; gap: 6px; }
+  .footer-logo .punto { color: var(--verde); font-weight: 700; }
+  .footer-logo .nombre { color: var(--blanco); font-weight: 700; letter-spacing: 2px; font-size: 14px; }
+  .footer-copy { font-size: 12px; color: var(--gris); }
+  .footer-link { font-size: 12px; color: var(--gris); text-decoration: none; }
+  .footer-link:hover { color: var(--verde); }
+
+  /* ======= DIVIDER ======= */
+  .divider { border: none; border-top: 1px solid rgba(255,255,255,0.06); margin: 0; }
+
+  /* ======= MOBILE ======= */
+  @media (max-width: 768px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    .hero { padding: 120px 24px 60px; }
+    .seccion { padding: 60px 24px; }
+    .dato-visual { grid-template-columns: 1fr; gap: 32px; }
+    .dato-big { font-size: 64px; }
+    .producto-grid { grid-template-columns: 1fr; }
+    .caso-card { grid-template-columns: 1fr; }
+    .caso-meta { border-right: none; padding-right: 0; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 32px; }
+    .demo-kpis { grid-template-columns: 1fr; }
+    .form-grid { grid-template-columns: 1fr; }
+    .contacto-section { padding: 60px 24px; }
+    footer { padding: 24px; flex-direction: column; text-align: center; }
+    .hero-dato { gap: 24px; }
+    .dato-sep { display: none; }
+  }
+</style>
 </head>
 <body>
 
-  <div class="header">
-    <div class="logo"><span class="punto">●</span> CLARIO</div>
-    <div class="subtitulo">INTELIGENCIA POLÍTICA</div>
-    <div class="bienvenida">
-      <h2>Monitoreo de imagen — Marcos Calvente</h2>
-      <p>Análisis de cobertura mediática · Enero – Abril 2026 · Guaymallén, Mendoza</p>
-    </div>
-  </div>
-
-  <div class="seccion-titulo">Sentimiento de cobertura mediática</div>
-  <div class="numeros">
-    <div class="card">
-      <div class="numero positivo">5</div>
-      <div class="label">Noticias positivas</div>
-      <div class="tendencia positivo">↑ 50% del total</div>
-    </div>
-    <div class="card">
-      <div class="numero negativo">4</div>
-      <div class="label">Noticias negativas</div>
-      <div class="tendencia negativo">↓ 40% del total</div>
-    </div>
-    <div class="card">
-      <div class="numero neutro">1</div>
-      <div class="label">Noticias neutras</div>
-      <div class="tendencia neutro">— 10% del total</div>
-    </div>
-  </div>
-
-  <div class="seccion-titulo">Evolución del sentimiento en el tiempo</div>
-  <div class="grafico-card">
-    <img src="timeline_sentimiento.png" alt="Evolución del sentimiento">
-  </div>
-
-  <div class="dos-columnas">
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <span class="punto">●</span>
     <div>
-      <div class="seccion-titulo">Riesgo de imagen</div>
-      <div class="grafico-card">
-        <img src="semaforo_riesgo.png" alt="Semáforo de riesgo">
+      <span class="nombre">CLARIO</span>
+      <span class="sub">INTELIGENCIA POLÍTICA</span>
+    </div>
+  </a>
+  <div class="nav-links">
+    <a href="#producto">Producto</a>
+    <a href="#caso">Caso real</a>
+    <a href="#contacto">Contacto</a>
+    <a href="#contacto" class="nav-cta">Solicitar informe</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-tag">INTELIGENCIA POLÍTICA · MENDOZA, ARGENTINA</div>
+  <h1>La imagen política<br>se deteriora <span>despacio</span>.<br>Nosotros lo vemos antes.</h1>
+  <p class="hero-sub">CLARIO monitorea en tiempo real lo que medios y ciudadanos dicen sobre tu gestión, lo analiza con inteligencia artificial, y te lo entrega como información accionable.</p>
+  <div class="hero-ctas">
+    <a href="#contacto" class="btn-primary">Solicitar informe de mi distrito</a>
+    <a href="#caso" class="btn-secondary">Ver caso real</a>
+  </div>
+  <div class="hero-dato">
+    <div class="dato-item">
+      <div class="dato-numero">67%</div>
+      <div class="dato-label">de la cobertura mediática sobre obras públicas en Guaymallén es negativa</div>
+    </div>
+    <div class="dato-sep"></div>
+    <div class="dato-item">
+      <div class="dato-numero">7</div>
+      <div class="dato-label">medios mendocinos monitoreados en tiempo real</div>
+    </div>
+    <div class="dato-sep"></div>
+    <div class="dato-item">
+      <div class="dato-numero">9</div>
+      <div class="dato-label">años de patrón de gestión documentado en Guaymallén</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- PROBLEMA -->
+<section class="seccion">
+  <div class="sec-tag">El problema</div>
+  <h2 class="sec-titulo">Hay algo que los políticos rara vez preguntan antes de que sea tarde</h2>
+  <p class="sec-sub">¿Qué está diciendo la gente de mí hoy? No en una encuesta. No en un focus group. Hoy. Esta mañana. En la nota que compartieron en el grupo de vecinos.</p>
+
+  <div class="dato-visual">
+    <div>
+      <div class="dato-big">67%</div>
+      <div class="dato-desc">de la cobertura mediática sobre obras en Guaymallén es negativa</div>
+      <div class="dato-note" style="margin-top:16px;">Fuente: análisis CLARIO · MDZ, Los Andes, El Sol, Sitio Andino · Enero–Abril 2026</div>
+    </div>
+    <div class="barras-visual">
+      <div class="barra-item">
+        <div class="barra-header">
+          <span class="barra-nombre">Negativo</span>
+          <span class="barra-pct" style="color:#EF4444;">67%</span>
+        </div>
+        <div class="barra-track"><div class="barra-fill" style="width:67%;background:#EF4444;"></div></div>
+      </div>
+      <div class="barra-item">
+        <div class="barra-header">
+          <span class="barra-nombre">Neutro</span>
+          <span class="barra-pct" style="color:#6B7280;">18%</span>
+        </div>
+        <div class="barra-track"><div class="barra-fill" style="width:18%;background:#6B7280;"></div></div>
+      </div>
+      <div class="barra-item">
+        <div class="barra-header">
+          <span class="barra-nombre">Positivo</span>
+          <span class="barra-pct" style="color:#1D9E75;">15%</span>
+        </div>
+        <div class="barra-track"><div class="barra-fill" style="width:15%;background:#1D9E75;"></div></div>
+      </div>
+      <div style="margin-top:8px;font-size:12px;color:#6B7280;line-height:1.5;">Cuando el tono negativo supera el 60%, el daño a la imagen ya es difícil de revertir sin intervención activa.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- PRODUCTO -->
+<section class="seccion" id="producto">
+  <div class="sec-tag">El producto</div>
+  <h2 class="sec-titulo">Inteligencia política accionable, no resúmenes de noticias</h2>
+  <p class="sec-sub">CLARIO no es un clipping de medios. Es un sistema de análisis que convierte cobertura periodística en decisiones políticas.</p>
+
+  <div class="producto-grid">
+    <div class="producto-card">
+      <div class="prod-icon">📡</div>
+      <div class="prod-titulo">Monitoreo en tiempo real</div>
+      <div class="prod-desc">Captura automática de noticias desde MDZ, Los Andes, El Sol, Sitio Andino, Memo, Mendoza Post y Diario UNO. Las 24 horas.</div>
+    </div>
+    <div class="producto-card">
+      <div class="prod-icon">🧠</div>
+      <div class="prod-titulo">Análisis con IA</div>
+      <div class="prod-desc">Cada noticia es analizada por inteligencia artificial. Sentimiento, actor principal, tema, riesgo de imagen. En segundos.</div>
+    </div>
+    <div class="producto-card">
+      <div class="prod-icon">📊</div>
+      <div class="prod-titulo">Dashboard ejecutivo</div>
+      <div class="prod-desc">Visualización clara de la cobertura. Evolución temporal, semáforo de riesgo, temas dominantes. Listo para presentar.</div>
+    </div>
+    <div class="producto-card">
+      <div class="prod-icon">📄</div>
+      <div class="prod-titulo">Informe estratégico</div>
+      <div class="prod-desc">Análisis político con lectura editorial, hipótesis de riesgo, oportunidades y recomendaciones concretas de comunicación.</div>
+    </div>
+    <div class="producto-card">
+      <div class="prod-icon">🗺️</div>
+      <div class="prod-titulo">Encuesta territorial</div>
+      <div class="prod-desc">Diseño de instrumento de campo para validar percepciones ciudadanas. Plan de muestreo, instrucciones y sistematización.</div>
+    </div>
+    <div class="producto-card">
+      <div class="prod-icon">⚡</div>
+      <div class="prod-titulo">Alerta temprana</div>
+      <div class="prod-desc">Detectamos el deterioro antes de que escale. No cuando ya es noticia de tapa. Cuando todavía se puede actuar.</div>
+    </div>
+  </div>
+
+  <!-- DEMO -->
+  <div class="demo-wrapper">
+    <div class="demo-header">
+      <div class="demo-titulo">Dashboard · Monitoreo Acceso Este · Guaymallén 2026</div>
+      <div class="demo-badge">DEMO</div>
+    </div>
+    <div class="demo-kpis">
+      <div class="demo-kpi">
+        <div class="demo-kpi-label">Noticias positivas</div>
+        <div class="demo-kpi-valor" style="color:#1D9E75;">5</div>
+      </div>
+      <div class="demo-kpi">
+        <div class="demo-kpi-label">Noticias negativas</div>
+        <div class="demo-kpi-valor" style="color:#EF4444;">4</div>
+      </div>
+      <div class="demo-kpi">
+        <div class="demo-kpi-label">Riesgo de imagen</div>
+        <div class="demo-kpi-valor" style="color:#F59E0B;">ALTO</div>
       </div>
     </div>
-    <div>
-      <div class="seccion-titulo">Temas que dominan la conversación</div>
-      <div class="grafico-card">
-        <img src="nube_palabras.png" alt="Nube de palabras">
+    <div class="demo-blur">
+      <div style="background:rgba(255,255,255,0.03);border-radius:8px;padding:20px;margin-bottom:12px;height:80px;"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div style="background:rgba(255,255,255,0.03);border-radius:8px;height:120px;"></div>
+        <div style="background:rgba(255,255,255,0.03);border-radius:8px;height:120px;"></div>
       </div>
     </div>
+    <div class="demo-overlay">
+      <a href="#contacto" class="btn-primary">Solicitar informe completo de tu distrito</a>
+    </div>
   </div>
+</section>
 
-  <div class="seccion-titulo">Análisis político</div>
-  <div class="analisis-card">
-    <p>Hay una frase que en política funciona como señal de alerta temprana. No porque sea falsa, sino porque ya fue dicha antes. "La obra más importante de los últimos 50 años" es la descripción que eligió el intendente de Guaymallén, Marcos Calvente, para presentar la Refuncionalización Integral del Acceso Este. Es también, con variaciones menores, la misma descripción que usó su antecesor radical, Marcelino Iglesias, para el Carril Godoy Cruz. Y es, con una escala diferente pero la misma lógica lingüística, la promesa con la que Mauricio Macri llegó a la presidencia en 2015 hablando del "mejor equipo de los últimos 50 años". Macri fue el único presidente desde la recuperación democrática que se presentó a la reelección y no la obtuvo. El Carril Godoy Cruz dañó al radicalismo en Guaymallén de una manera que todavía se percibe. El patrón no prueba nada. Pero merece atención.</p>
+<hr class="divider">
 
-    <p>CLARIO monitoreó durante los últimos tres meses el tratamiento mediático de la obra y de la gestión de Calvente en MDZ, Los Andes y El Sol de Mendoza. El relevamiento arrojó 10 noticias: 5 positivas, 4 negativas y 1 neutra. El equilibrio parece razonable hasta que se examina el contenido. Las notas positivas celebran la obra en términos históricos y presupuestarios. Las negativas tocan la vida cotidiana del vecino: el comerciante que perdió el 40% de sus ventas, el caos de tránsito, la pregunta que nadie formula en voz alta en una conferencia de prensa pero que circula en cada conversación de barrio: ¿esto no va a terminar como el Carril Godoy Cruz?</p>
+<!-- CASO REAL -->
+<section class="seccion" id="caso">
+  <div class="sec-tag">Caso real</div>
+  <h2 class="sec-titulo">Guaymallén · Acceso Este · 2026</h2>
+  <p class="sec-sub">El primer análisis completo de imagen política que hicimos. Datos reales, medios reales, decisiones reales.</p>
 
-    <p>La evolución temporal del sentimiento confirma lo que el dato estático sugiere. Cada vez que Calvente habla de transformación histórica, la cobertura sube. Cada vez que la obra toca la calle, cae. Febrero fue el mes más crítico: vecinos, comerciantes y la sombra del antecesor aparecieron juntos en los medios por primera vez. Marzo rebotó con la apertura de sesiones y el plan Guaymallén Productivo 2030, pero fue un rebote institucional. No territorial.</p>
-
-    <p>La lectura por medio agrega matices que el número total no captura. Los Andes cubre la obra desde la gestión: licitaciones, empresas, presupuesto. Es la mirada del proceso. MDZ está dividido, lo cual no es menor: publicó tanto la nota más dura del período, la que pregunta explícitamente si se repetirá el desastre del Carril Godoy Cruz, como la más optimista, la del anuncio de los 55 millones de dólares. Cuando un medio no tiene todavía una definición editorial sobre un tema, el tema sigue abierto. El Sol, en cambio, es el medio más cercano al vecino y concentra las voces críticas. Si la situación escala, va a escalar primero ahí.</p>
-
-    <p>Hay dos señales que los medios monitoreados no terminaron de capturar pero que ya tienen existencia pública. La primera es la pregunta que el vecino de Guaymallén se hace en voz baja y que todavía no encontró su nota: dónde está la policía de tránsito municipal mientras dura la obra. La Ruta 7 saturaba Villa Nueva y las arterias que conectan el norte con el sur del departamento. Eso era el problema que la obra viene a resolver en 30 meses. Mientras tanto, ese tránsito se traslada a las calles internas. Sin presencia visible del Estado en la calle, la narrativa de la transformación histórica se vacía. El vecino no ve el futuro. Ve el caos del presente sin nadie que lo ordene.</p>
-
-    <p>La segunda señal es más concreta y más grave. El 9 de abril, Sitio Andino publicó una nota que ninguno de los tres medios monitoreados reprodujo: una mujer que circulaba por calle Libertad intentó girar hacia la Lateral Norte del Acceso Este, confundida por el reciente cambio de sentido de las colectoras. Chocó de frente contra un colectivo de la Línea 260. Quedó gravemente herida e inconsciente. Hasta ahí, un accidente previsible en el contexto de una obra mal comunicada. Lo que siguió no lo es: mientras la mujer yacía inconsciente en el asfalto, personas que pasaban le robaron la cartera. Un municipio que promete transformación histórica no puede permitirse que su primera imagen de gestión del caos sea una víctima desvalida siendo saqueada en la vía pública. Ese es el tipo de escena que no necesita editorial para volverse relato político.</p>
-
-    <p>La recomendación es una sola y tiene dos partes. Calvente necesita cambiar el lenguaje antes de que el lenguaje lo cambie a él. No "la obra más grande", sino "la obra que resuelve lo que vos sufrís todos los días". Y necesita hacerlo con presencia territorial concreta: policía de tránsito visible, cronogramas claros por barrio, canales directos para el comerciante y el vecino. La transformación histórica se celebra cuando termina. Mientras dura, hay que gestionar el dolor.</p>
-
-    <p>Hay un dato que conviene no perder de vista, aunque sea incómodo plantearlo en estos términos. A pocos kilómetros de Guaymallén, el intendente de Luján de Cuyo, Esteban Allasino, ingeniero civil especializado en obra vial igual que Calvente, atravesó su propio ciclo de obras con impacto en el tránsito cotidiano y salió con imagen intacta. Lo hizo con una narrativa diferente: participación ciudadana, datos públicos, digitalización, presencia en el territorio. Sin el lenguaje de los 50 años. Allasino tiene proyección. Calvente también. Y Mendoza, en algún momento no tan lejano, va a necesitar candidatos con gestión demostrada en el departamento más poblado del oeste argentino. Que ambos sean ingenieros civiles especializados en obra vial es una coincidencia. Que uno esté construyendo una narrativa sólida mientras el otro todavía no terminó de definir la suya, no lo es.</p>
+  <div class="caso-card">
+    <div class="caso-meta">
+      <div class="caso-tag">Caso documentado</div>
+      <div class="caso-nombre">Marcos Calvente</div>
+      <div class="caso-periodo">Intendente de Guaymallén · Enero–Abril 2026</div>
+      <div class="caso-stat">
+        <div class="caso-stat-num">10</div>
+        <div class="caso-stat-label">Noticias analizadas</div>
+      </div>
+      <div class="caso-stat">
+        <div class="caso-stat-num">7</div>
+        <div class="caso-stat-label">Medios monitoreados</div>
+      </div>
+      <div class="caso-stat">
+        <div class="caso-stat-num">4</div>
+        <div class="caso-stat-label">Alertas de riesgo alto detectadas</div>
+      </div>
+    </div>
+    <div class="caso-contenido">
+      <div class="caso-frase">"La imagen política no se rompe de golpe. Se deteriora despacio, en silencio, mientras todos sonríen en los actos."</div>
+      <div class="caso-texto">CLARIO monitoreó la cobertura mediática del Acceso Este durante tres meses. Lo que encontramos no era lo que el municipio esperaba. El 67% de las noticias tenían tono negativo o crítico. Las alertas más graves no venían de la oposición: venían de vecinos, comerciantes y de una comparación histórica que nadie en el equipo había detectado.</div>
+      <div class="caso-texto">La obra más importante de Guaymallén en 50 años usaba el mismo lenguaje que la gestión anterior. Eso, en política, tiene consecuencias documentadas.</div>
+      <a href="#contacto" class="btn-primary" style="margin-top:8px;display:inline-block;">Quiero un análisis así para mi gestión</a>
+    </div>
   </div>
+</section>
 
-  <div class="seccion-titulo">Detalle de noticias analizadas</div>
-  <div class="tabla-card">
-    <table>
-      <thead>
-        <tr>
-          <th>Medio</th>
-          <th>Título</th>
-          <th>Fecha</th>
-          <th>Sentimiento</th>
-          <th>Riesgo</th>
-          <th>Actor</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td class="medio-tag">MDZ</td><td>Calvente confirmó la mega obra del Acceso Este por 55 millones de dólares</td><td>18 ene</td><td><span class="badge badge-positivo">Positivo</span></td><td><span class="badge badge-bajo">Bajo</span></td><td>Calvente</td></tr>
-        <tr><td class="medio-tag">Los Andes</td><td>Siete empresas compiten por la obra vial más importante de Guaymallén en 50 años</td><td>18 ene</td><td><span class="badge badge-positivo">Positivo</span></td><td><span class="badge badge-bajo">Bajo</span></td><td>Calvente</td></tr>
-        <tr><td class="medio-tag">El Sol</td><td>Calvente pidió paciencia a los vecinos por el impacto del tránsito durante la obra</td><td>20 ene</td><td><span class="badge badge-neutro">Neutro</span></td><td><span class="badge badge-medio">Medio</span></td><td>Calvente</td></tr>
-        <tr><td class="medio-tag">MDZ</td><td>Vecinos preocupados por los cortes de tránsito en Guaymallén durante la obra del Acceso Este</td><td>10 feb</td><td><span class="badge badge-negativo">Negativo</span></td><td><span class="badge badge-alto">Alto</span></td><td>Vecinos</td></tr>
-        <tr><td class="medio-tag">Los Andes</td><td>Calvente presentó el plan bienal de 75 obras en Guaymallén para 2025 y 2026</td><td>15 feb</td><td><span class="badge badge-positivo">Positivo</span></td><td><span class="badge badge-bajo">Bajo</span></td><td>Calvente</td></tr>
-        <tr><td class="medio-tag">El Sol</td><td>El Acceso Este divide opiniones entre los vecinos de Guaymallén</td><td>20 feb</td><td><span class="badge badge-negativo">Negativo</span></td><td><span class="badge badge-alto">Alto</span></td><td>Vecinos</td></tr>
-        <tr><td class="medio-tag">MDZ</td><td>¿Se repetirá el desastre del Carril Godoy Cruz con el Acceso Este?</td><td>01 mar</td><td><span class="badge badge-negativo">Negativo</span></td><td><span class="badge badge-alto">Alto</span></td><td>Iglesias</td></tr>
-        <tr><td class="medio-tag">Los Andes</td><td>Calvente abrió sesiones con fuerte respaldo y anuncios para Guaymallén 2026</td><td>10 mar</td><td><span class="badge badge-positivo">Positivo</span></td><td><span class="badge badge-bajo">Bajo</span></td><td>Calvente</td></tr>
-        <tr><td class="medio-tag">El Sol</td><td>Comerciantes del Acceso Este piden soluciones urgentes por la caída de ventas</td><td>15 mar</td><td><span class="badge badge-negativo">Negativo</span></td><td><span class="badge badge-alto">Alto</span></td><td>Comerciantes</td></tr>
-        <tr><td class="medio-tag">MDZ</td><td>Calvente destacó que el Acceso Este reconectará el norte y el sur de Guaymallén</td><td>01 abr</td><td><span class="badge badge-positivo">Positivo</span></td><td><span class="badge badge-medio">Medio</span></td><td>Calvente</td></tr>
-      </tbody>
-    </table>
+<hr class="divider">
+
+<!-- CONTACTO -->
+<section class="contacto-section" id="contacto">
+  <div class="contacto-inner">
+    <div class="sec-tag" style="text-align:center;">Contacto</div>
+    <h2 class="sec-titulo">¿Cuánto sabe tu gestión de lo que dice la gente hoy?</h2>
+    <p class="sec-sub">Completá el formulario y te contactamos para definir el análisis de tu distrito.</p>
+
+    <form name="contacto" method="POST" data-netlify="true">
+      <input type="hidden" name="form-name" value="contacto">
+      <div class="form-grid">
+        <input type="text" name="nombre" class="form-input" placeholder="Nombre completo" required>
+        <input type="text" name="cargo" class="form-input" placeholder="Cargo / Función">
+        <input type="text" name="distrito" class="form-input" placeholder="Distrito / Municipio">
+        <input type="tel" name="telefono" class="form-input" placeholder="Teléfono">
+        <input type="email" name="email" class="form-input form-input-full" placeholder="Email" required>
+      </div>
+      <button type="submit" class="form-submit">Quiero saber cómo está mi imagen →</button>
+      <div class="form-nota">Información confidencial. No compartimos datos con terceros.</div>
+    </form>
   </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">
+    <span class="punto">●</span>
+    <div>
+      <span class="nombre">CLARIO</span>
+      <div style="font-size:9px;color:#1D9E75;letter-spacing:2px;margin-top:1px;">INTELIGENCIA POLÍTICA</div>
+    </div>
+  </div>
+  <div class="footer-copy">Lo que dice la gente, en datos que importan.</div>
+  <a href="mailto:contacto@clario.ar" class="footer-link">contacto@clario.ar</a>
+</footer>
 
 </body>
 </html>
