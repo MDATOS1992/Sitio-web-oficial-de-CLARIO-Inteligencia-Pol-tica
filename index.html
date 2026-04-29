@@ -34,9 +34,23 @@ body {
   pointer-events: none;
   z-index: 9999;
   transform: translate(-50%,-50%);
-  transition: width .25s, height .25s, background .25s;
+  transition: width .3s cubic-bezier(.25,.1,.25,1), height .3s cubic-bezier(.25,.1,.25,1), background .3s ease;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
 }
-.cur.hov { width: 36px; height: 36px; background: transparent; border: 1.5px solid var(--verde); }
+.cur.hov { width: 88px; height: 88px; background: var(--negro); border: none; }
+.cur.hov-verde { width: 88px; height: 88px; background: var(--verde); }
+.cur-txt {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px; font-weight: 400;
+  letter-spacing: 1.5px;
+  color: var(--fondo);
+  opacity: 0;
+  white-space: nowrap;
+  transition: opacity .2s ease .1s;
+  user-select: none;
+}
+.cur.hov .cur-txt, .cur.hov-verde .cur-txt { opacity: 1; }
 
 /* INTRO */
 #intro {
@@ -417,6 +431,123 @@ footer {
 }
 .chat-volver:hover { color: var(--negro); }
 
+/* MANIFIESTO */
+.sec-manifiesto {
+  padding: 180px 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.manifiesto-label {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--gris);
+  margin-bottom: 64px;
+}
+
+.manifiesto-h {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(36px, 5.5vw, 72px);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -1px;
+  color: var(--negro);
+  max-width: 860px;
+  margin-bottom: 80px;
+}
+
+.manifiesto-h em {
+  font-style: italic;
+  color: var(--verde);
+}
+
+.manifiesto-lineas {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
+  max-width: 700px;
+  border-top: 1px solid var(--gris-claro);
+}
+
+.manifiesto-linea {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--gris-claro);
+  gap: 32px;
+}
+
+.manifiesto-linea-num {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--gris);
+  flex-shrink: 0;
+  width: 28px;
+  text-align: left;
+}
+
+.manifiesto-linea-txt {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(16px, 1.8vw, 22px);
+  font-weight: 400;
+  color: var(--negro);
+  text-align: left;
+  line-height: 1.3;
+  flex: 1;
+}
+
+.manifiesto-linea-txt em {
+  font-style: italic;
+  color: var(--verde);
+}
+
+/* TICKER */
+.ticker-wrap {
+  border-top: 1px solid var(--gris-claro);
+  border-bottom: 1px solid var(--gris-claro);
+  overflow: hidden;
+  padding: 14px 0;
+  white-space: nowrap;
+}
+
+.ticker-track {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  animation: ticker-move 32s linear infinite;
+  will-change: transform;
+}
+
+.ticker-track:hover { animation-play-state: paused; }
+
+.ticker-item {
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--gris);
+  padding: 0 28px;
+  transition: color .2s;
+}
+
+.ticker-track:hover .ticker-item { color: var(--negro); }
+
+.ticker-sep {
+  font-size: 8px;
+  color: var(--verde);
+  flex-shrink: 0;
+}
+
+@keyframes ticker-move {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
 /* MOBILE */
 @media (max-width: 768px) {
   nav { padding: 24px 28px; }
@@ -437,7 +568,7 @@ footer {
 </head>
 <body>
 
-<div class="cur" id="cur"></div>
+<div class="cur" id="cur"><span class="cur-txt" id="cur-txt"></span></div>
 
 <!-- INTRO -->
 <div id="intro">
@@ -458,7 +589,12 @@ footer {
 <!-- HERO -->
 <section class="hero">
   <div class="hero-eyebrow">INTELIGENCIA POLÍTICA · 2026</div>
-  <h1 class="hero-h1">Lo que dice<br>la gente,<br>en datos que<br><em>importan.</em></h1>
+  <h1 class="hero-h1">
+    <span class="scramble-line" data-text="Lo que dice">Lo que dice</span><br>
+    <span class="scramble-line" data-text="la gente,">la gente,</span><br>
+    <span class="scramble-line" data-text="en datos que">en datos que</span><br>
+    <em><span class="scramble-line scramble-verde" data-text="importan.">importan.</span></em>
+  </h1>
   <div class="hero-foot">
     <p class="hero-desc">CLARIO monitorea en tiempo real lo que medios y ciudadanos dicen sobre tu gestión. Lo analiza con inteligencia artificial. Lo convierte en decisiones.</p>
     <div class="hero-scroll">
@@ -468,11 +604,47 @@ footer {
   </div>
 </section>
 
-<hr>
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <span class="ticker-item">MENDOZA</span>
+    <span class="ticker-sep">·</span>
+    <span class="ticker-item">INTELIGENCIA POLÍTICA</span>
+    <span class="ticker-sep">·</span>
+    <span class="ticker-item">MONITOREO EN TIEMPO REAL</span>
+    <span class="ticker-sep">·</span>
+    <span class="ticker-item">ANÁLISIS DE SENTIMIENTO</span>
+    <span class="ticker-sep">·</span>
+    <span class="ticker-item">CLARIO</span>
+    <span class="ticker-sep">·</span>
+    <span class="ticker-item">DATOS QUE IMPORTAN</span>
+    <span class="ticker-sep">·</span>
+    <span class="ticker-item">ALERTA TEMPRANA</span>
+    <span class="ticker-sep">·</span>
+    <span class="ticker-item">GESTIÓN 2026</span>
+    <span class="ticker-sep">·</span>
+    <span class="ticker-item">MENDOZA</span>
+    <span class="ticker-sep">·</span>
+    <span class="ticker-item">INTELIGENCIA POLÍTICA</span>
+    <span class="ticker-sep">·</span>
+    <span class="ticker-item">MONITOREO EN TIEMPO REAL</span>
+    <span class="ticker-sep">·</span>
+    <span class="ticker-item">ANÁLISIS DE SENTIMIENTO</span>
+    <span class="ticker-sep">·</span>
+    <span class="ticker-item">CLARIO</span>
+    <span class="ticker-sep">·</span>
+    <span class="ticker-item">DATOS QUE IMPORTAN</span>
+    <span class="ticker-sep">·</span>
+    <span class="ticker-item">ALERTA TEMPRANA</span>
+    <span class="ticker-sep">·</span>
+    <span class="ticker-item">GESTIÓN 2026</span>
+    <span class="ticker-sep">·</span>
+  </div>
+</div>
 
 <!-- DATO -->
 <div class="sec-dato">
-  <div class="dato-num r">67<sup>%</sup></div>
+  <div class="dato-num r" id="contador-wrap"><span id="contador">0</span><sup>%</sup></div>
   <div class="dato-txt r r1">
     <h2>de la cobertura mediática sobre obras públicas en Mendoza es negativa.</h2>
     <p>La imagen política no se rompe de golpe. Se deteriora despacio, en silencio, mientras todos sonríen en los actos. CLARIO lo ve antes.</p>
@@ -497,6 +669,34 @@ footer {
     <div class="sv-item r r3"><span class="sv-n">04</span><span class="sv-nombre">Informe estratégico político</span><span class="sv-tag">Estrategia</span></div>
     <div class="sv-item r"><span class="sv-n">05</span><span class="sv-nombre">Encuesta territorial</span><span class="sv-tag">Campo</span></div>
     <div class="sv-item r r1"><span class="sv-n">06</span><span class="sv-nombre">Alerta temprana de riesgo</span><span class="sv-tag">Alerta</span></div>
+  </div>
+</div>
+
+<!-- MANIFIESTO -->
+<div class="sec-manifiesto">
+  <div class="manifiesto-label r">NUESTRA POSICIÓN</div>
+  <h2 class="manifiesto-h r r1">
+    La política mendocina no tiene<br>
+    problema de <em>ideas.</em><br>
+    Tiene problema de <em>información.</em>
+  </h2>
+  <div class="manifiesto-lineas">
+    <div class="manifiesto-linea r">
+      <span class="manifiesto-linea-num">I</span>
+      <span class="manifiesto-linea-txt">Las decisiones políticas se toman con encuestas viejas y titulares de ayer.</span>
+    </div>
+    <div class="manifiesto-linea r r1">
+      <span class="manifiesto-linea-num">II</span>
+      <span class="manifiesto-linea-txt">La imagen se deteriora en silencio, mientras todos sonríen en los actos.</span>
+    </div>
+    <div class="manifiesto-linea r r2">
+      <span class="manifiesto-linea-num">III</span>
+      <span class="manifiesto-linea-txt">El dato que nadie midió es siempre el que <em>cambia todo.</em></span>
+    </div>
+    <div class="manifiesto-linea r r3">
+      <span class="manifiesto-linea-num">IV</span>
+      <span class="manifiesto-linea-txt">CLARIO existe para que eso no vuelva a pasar.</span>
+    </div>
   </div>
 </div>
 
@@ -641,9 +841,43 @@ const cur = document.getElementById('cur');
 let mx=0,my=0,cx=0,cy=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
 (function loop(){cx+=(mx-cx)*.14;cy+=(my-cy)*.14;cur.style.left=cx+'px';cur.style.top=cy+'px';requestAnimationFrame(loop);})();
-document.querySelectorAll('a,button,.sv-item,.nota,.cta-btn,.nl-btn,.chat-opcion').forEach(el=>{
-  el.addEventListener('mouseenter',()=>cur.classList.add('hov'));
-  el.addEventListener('mouseleave',()=>cur.classList.remove('hov'));
+const curTxt = document.getElementById('cur-txt');
+
+function setCursor(el) {
+  cur.classList.remove('hov','hov-verde');
+  // notas de análisis
+  if (el.closest('.nota')) {
+    cur.classList.add('hov');
+    curTxt.textContent = 'LEER →';
+  }
+  // servicios
+  else if (el.closest('.sv-item')) {
+    cur.classList.add('hov');
+    curTxt.textContent = 'VER →';
+  }
+  // botones de contacto y cta
+  else if (el.closest('.cta-btn') || el.closest('.btn-enviar') || el.id === 'chat-toggle') {
+    cur.classList.add('hov-verde');
+    curTxt.textContent = 'HABLAR →';
+  }
+  // newsletter
+  else if (el.closest('.nl-btn')) {
+    cur.classList.add('hov-verde');
+    curTxt.textContent = 'SUSCRIBIR →';
+  }
+  // links y resto
+  else {
+    cur.classList.add('hov');
+    curTxt.textContent = '→';
+  }
+}
+
+document.querySelectorAll('a,button,.sv-item,.nota,.cta-btn,.nl-btn').forEach(el=>{
+  el.addEventListener('mouseenter', () => setCursor(el));
+  el.addEventListener('mouseleave', () => {
+    cur.classList.remove('hov','hov-verde');
+    curTxt.textContent = '';
+  });
 });
 
 // INTRO
@@ -651,6 +885,42 @@ setTimeout(()=>{
   document.getElementById('intro').classList.add('out');
   document.getElementById('main').classList.add('vis');
 },2400);
+
+// TEXT SCRAMBLE
+const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789·—';
+function scramble(el, delay) {
+  const final = el.getAttribute('data-text');
+  const isVerde = el.classList.contains('scramble-verde');
+  let frame = 0;
+  const totalFrames = 28;
+  const revealAt = Math.floor(totalFrames * 0.55);
+  setTimeout(() => {
+    const tick = setInterval(() => {
+      const progress = frame / totalFrames;
+      const revealed = Math.floor(progress * final.length);
+      let out = '';
+      for (let i = 0; i < final.length; i++) {
+        if (final[i] === ' ') { out += ' '; continue; }
+        if (final[i] === '\n') { out += '\n'; continue; }
+        if (i < revealed || frame >= totalFrames) {
+          out += final[i];
+        } else {
+          out += CHARS[Math.floor(Math.random() * CHARS.length)];
+        }
+      }
+      el.textContent = out;
+      if (isVerde) el.style.color = 'var(--verde)';
+      frame++;
+      if (frame > totalFrames) clearInterval(tick);
+    }, 38);
+  }, delay);
+}
+
+setTimeout(() => {
+  document.querySelectorAll('.scramble-line').forEach((el, i) => {
+    scramble(el, i * 180);
+  });
+}, 2600);
 
 // SCROLL REVEAL
 const obs=new IntersectionObserver(entries=>{
@@ -682,6 +952,33 @@ form.addEventListener('submit', async e => {
     status.style.color = '#E24B4A';
   }
 });
+
+// CONTADOR ANIMADO
+const contadorEl = document.getElementById('contador');
+const contadorWrap = document.getElementById('contador-wrap');
+let contadorDisparado = false;
+
+const contadorObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting && !contadorDisparado) {
+      contadorDisparado = true;
+      const target = 67;
+      const duration = 1800;
+      const start = performance.now();
+      function easeOutExpo(t) { return t === 1 ? 1 : 1 - Math.pow(2, -10 * t); }
+      function step(now) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = easeOutExpo(progress);
+        contadorEl.textContent = Math.round(eased * target);
+        if (progress < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+  });
+}, { threshold: 0.3 });
+
+contadorObs.observe(contadorWrap);
 
 // CHATBOT
 const chatToggle = document.getElementById('chat-toggle');
@@ -765,9 +1062,13 @@ function renderChat(key) {
   });
 }
 
+let chatIniciado = false;
 chatToggle.addEventListener('click', () => {
   const open = chatBox.classList.toggle('open');
-  if (open && chatBody.innerHTML === '') renderChat('inicio');
+  if (open && !chatIniciado) {
+    chatIniciado = true;
+    setTimeout(() => renderChat('inicio'), 80);
+  }
   chatToggle.innerHTML = open
     ? `<svg viewBox="0 0 24 24" width="22" height="22" fill="var(--fondo)"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>`
     : `<svg viewBox="0 0 24 24" width="22" height="22" fill="var(--fondo)"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>`;
