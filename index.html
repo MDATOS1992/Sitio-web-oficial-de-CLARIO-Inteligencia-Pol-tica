@@ -212,6 +212,50 @@ hr { border: none; border-top: 1px solid var(--gris-claro); margin: 0 64px; }
   display: flex; justify-content: space-between;
   font-size: 11px; color: #555553;
 }
+
+/* NOTA DESTACADA — reemplaza la verde */
+.nota-destacada {
+  background: var(--verde);
+  grid-column: span 1;
+}
+.nota-destacada:hover { background: #189060; }
+.nota-destacada .nota-tag {
+  display: flex; align-items: center; gap: 10px;
+  color: rgba(255,255,255,.6);
+}
+.nota-destacada .nota-tag .nuevo-badge {
+  background: white;
+  color: var(--verde);
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 2px;
+  padding: 3px 8px;
+  border-radius: 40px;
+}
+.nota-destacada .nota-texto { color: white; }
+.nota-destacada .nota-foot {
+  border-color: rgba(255,255,255,.15);
+  color: rgba(255,255,255,.5);
+}
+.nota-destacada .nota-stat {
+  margin-top: 20px;
+  margin-bottom: 4px;
+}
+.nota-destacada .nota-stat-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 56px;
+  font-weight: 400;
+  color: white;
+  line-height: 1;
+  letter-spacing: -2px;
+}
+.nota-destacada .nota-stat-label {
+  font-size: 11px;
+  color: rgba(255,255,255,.6);
+  letter-spacing: 1px;
+  margin-top: 4px;
+}
+
 .nota-verde { background: var(--verde); }
 .nota-verde:hover { background: #189060; }
 .nota-verde .nota-tag { color: rgba(255,255,255,.5); }
@@ -592,6 +636,7 @@ footer {
   .notas-grid { grid-template-columns: 1fr; }
   .nota { min-height: 280px; padding: 36px 28px; }
   .nota-texto { font-size: clamp(16px, 3.5vw, 19px); }
+  .nota-destacada .nota-stat-num { font-size: 44px; }
 
   .sec-newsletter { grid-template-columns: 1fr; padding: 80px 28px; gap: 40px; }
   .nl-izq .sv-titulo { font-size: clamp(32px, 8vw, 48px); }
@@ -619,11 +664,10 @@ footer {
   .chat-volver { cursor: pointer; }
   .btn-enviar { cursor: pointer; }
 
-  /* Reduce reveal distance on mobile for subtlety */
   .r { transform: translateY(20px); transition-duration: .9s; }
 }
 
-/* MOBILE — 375px (small phones) */
+/* MOBILE — 375px */
 @media (max-width: 375px) {
   nav { padding: 20px 20px; }
   .nav-logo { font-size: 11px; letter-spacing: 3px; }
@@ -846,22 +890,39 @@ footer {
     <p class="sv-desc r r2" style="color:#555553">Lecturas políticas basadas en datos reales. Sin opinión, sin militancia. Solo lo que dicen los números.</p>
   </div>
   <div class="notas-grid">
-    <div class="nota r">
+
+    <!-- NOTA DESTACADA — 1° DE MAYO 2026 -->
+    <div class="nota nota-destacada r">
+      <div>
+        <div class="nota-tag">
+          ARGENTINA · 1° DE MAYO, 2026
+          <span class="nuevo-badge">NUEVO</span>
+        </div>
+        <div class="nota-texto">Un empleo destruido cada cuatro minutos. Los datos de la SRT que el debate político prefiere ignorar.</div>
+        <div class="nota-stat">
+          <div class="nota-stat-num">273.000</div>
+          <div class="nota-stat-label">PUESTOS DESTRUIDOS · NOV. 2023 – NOV. 2025</div>
+        </div>
+      </div>
+      <div class="nota-foot">
+        <span>SRT · Estefanía Pozzo, Buenos Aires Herald</span>
+        <span>→</span>
+      </div>
+    </div>
+
+    <div class="nota r r1">
       <div><div class="nota-tag">GUAYMALLÉN · ABRIL 2026</div><div class="nota-texto">La imagen política no se rompe de golpe. Se deteriora despacio, en silencio, mientras todos sonríen en los actos.</div></div>
       <div class="nota-foot"><span>Acceso Este · Calvente</span><span>→</span></div>
     </div>
-    <div class="nota r r1">
+    <div class="nota r r2">
       <div><div class="nota-tag">MENDOZA · ABRIL 2026</div><div class="nota-texto">En Mendoza, la carrera por la gobernación 2027 ya empezó. Solo que casi nadie lo dice en voz alta.</div></div>
       <div class="nota-foot"><span>Elecciones 2027</span><span>→</span></div>
     </div>
-    <div class="nota r r2">
+    <div class="nota r r3">
       <div><div class="nota-tag">GUAYMALLÉN · 2026</div><div class="nota-texto">El 67% de la cobertura mediática sobre obras públicas en Guaymallén tiene tono negativo o crítico.</div></div>
       <div class="nota-foot"><span>Narrativa mediática</span><span>→</span></div>
     </div>
-    <div class="nota nota-verde r r3">
-      <div><div class="nota-tag">PRÓXIMAMENTE</div><div class="nota-texto">El siguiente análisis está en construcción. Monitoreamos. Interpretamos. Publicamos.</div></div>
-      <div class="nota-foot"><span>CLARIO · clario.ar</span><span>●</span></div>
-    </div>
+
   </div>
 </div>
 
@@ -875,8 +936,7 @@ footer {
     <p>Una vez por semana: lo que está pasando en la política mendocina, filtrado por datos y sin ruido. Elegí cómo recibir el análisis de CLARIO.</p>
   </div>
   <div class="nl-der r r1">
-    <!-- WhatsApp — PLACEHOLDER: reemplazar XXXXXXXXXXX por número real el viernes -->
-    <a href="https://wa.me/XXXXXXXXXXX?text=Hola%2C%20quiero%20recibir%20el%20newsletter%20de%20CLARIO" 
+    <a href="https://wa.me/XXXXXXXXXXX?text=Hola%2C%20quiero%20recibir%20el%20newsletter%20de%20CLARIO"
        target="_blank" class="nl-btn" id="wa-btn">
       <div class="nl-btn-ico wa">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.859L.057 23.428a.5.5 0 0 0 .609.61l5.692-1.476A11.942 11.942 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.826 9.826 0 0 1-5.001-1.368l-.36-.214-3.717.964.991-3.614-.235-.373A9.818 9.818 0 0 1 2.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>
@@ -887,9 +947,7 @@ footer {
       </div>
       <span class="nl-btn-arr">→</span>
     </a>
-
-    <!-- Mail -->
-    <a href="mailto:clarioar@gmail.com?subject=Quiero%20recibir%20el%20newsletter%20de%20CLARIO" 
+    <a href="mailto:clarioar@gmail.com?subject=Quiero%20recibir%20el%20newsletter%20de%20CLARIO"
        class="nl-btn">
       <div class="nl-btn-ico em">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="#4285F4"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
@@ -900,7 +958,6 @@ footer {
       </div>
       <span class="nl-btn-arr">→</span>
     </a>
-
     <div class="nl-aviso">El número de WhatsApp de CLARIO estará activo en los próximos días. Podés suscribirte por mail mientras tanto.</div>
   </div>
 </div>
@@ -916,9 +973,8 @@ footer {
     </div>
     <p class="sv-desc r r2">Si trabajás en política o comunicación institucional y querés entender mejor lo que dice la gente, escribinos.</p>
   </div>
-
-  <form class="form-wrap r" id="contact-form" 
-        action="https://formspree.io/f/xnjlkbbo" 
+  <form class="form-wrap r" id="contact-form"
+        action="https://formspree.io/f/xnjlkbbo"
         method="POST">
     <div class="form-group">
       <label class="form-label">NOMBRE</label>
@@ -962,9 +1018,7 @@ footer {
       <div class="chat-header-punto"></div>
       <span class="chat-header-txt">CLARIO</span>
     </div>
-    <div class="chat-body" id="chat-body">
-      <!-- contenido dinámico -->
-    </div>
+    <div class="chat-body" id="chat-body"></div>
   </div>
   <button id="chat-toggle" aria-label="Abrir chat">
     <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
@@ -981,46 +1035,20 @@ const curTxt = document.getElementById('cur-txt');
 
 function setCursor(el) {
   cur.classList.remove('hov','hov-verde');
-  // notas de análisis
-  if (el.closest('.nota')) {
-    cur.classList.add('hov');
-    curTxt.textContent = 'LEER →';
-  }
-  // servicios
-  else if (el.closest('.sv-item')) {
-    cur.classList.add('hov');
-    curTxt.textContent = 'VER →';
-  }
-  // botones de contacto y cta
-  else if (el.closest('.cta-btn') || el.closest('.btn-enviar') || el.id === 'chat-toggle') {
-    cur.classList.add('hov-verde');
-    curTxt.textContent = 'HABLAR →';
-  }
-  // newsletter
-  else if (el.closest('.nl-btn')) {
-    cur.classList.add('hov-verde');
-    curTxt.textContent = 'SUSCRIBIR →';
-  }
-  // links y resto
-  else {
-    cur.classList.add('hov');
-    curTxt.textContent = '→';
-  }
+  if (el.closest('.nota')) { cur.classList.add('hov'); curTxt.textContent = 'LEER →'; }
+  else if (el.closest('.sv-item')) { cur.classList.add('hov'); curTxt.textContent = 'VER →'; }
+  else if (el.closest('.cta-btn') || el.closest('.btn-enviar') || el.id === 'chat-toggle') { cur.classList.add('hov-verde'); curTxt.textContent = 'HABLAR →'; }
+  else if (el.closest('.nl-btn')) { cur.classList.add('hov-verde'); curTxt.textContent = 'SUSCRIBIR →'; }
+  else { cur.classList.add('hov'); curTxt.textContent = '→'; }
 }
 
 document.querySelectorAll('a,button,.sv-item,.nota,.cta-btn,.nl-btn').forEach(el=>{
   el.addEventListener('mouseenter', () => setCursor(el));
-  el.addEventListener('mouseleave', () => {
-    cur.classList.remove('hov','hov-verde');
-    curTxt.textContent = '';
-  });
+  el.addEventListener('mouseleave', () => { cur.classList.remove('hov','hov-verde'); curTxt.textContent = ''; });
 });
 
 // INTRO
-setTimeout(()=>{
-  document.getElementById('intro').classList.add('out');
-  document.getElementById('main').classList.add('vis');
-},2000);
+setTimeout(()=>{ document.getElementById('intro').classList.add('out'); document.getElementById('main').classList.add('vis'); },2000);
 
 // TEXT SCRAMBLE
 const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789·—';
@@ -1029,7 +1057,6 @@ function scramble(el, delay) {
   const isVerde = el.classList.contains('scramble-verde');
   let frame = 0;
   const totalFrames = 28;
-  const revealAt = Math.floor(totalFrames * 0.55);
   setTimeout(() => {
     const tick = setInterval(() => {
       const progress = frame / totalFrames;
@@ -1037,12 +1064,8 @@ function scramble(el, delay) {
       let out = '';
       for (let i = 0; i < final.length; i++) {
         if (final[i] === ' ') { out += ' '; continue; }
-        if (final[i] === '\n') { out += '\n'; continue; }
-        if (i < revealed || frame >= totalFrames) {
-          out += final[i];
-        } else {
-          out += CHARS[Math.floor(Math.random() * CHARS.length)];
-        }
+        if (i < revealed || frame >= totalFrames) { out += final[i]; }
+        else { out += CHARS[Math.floor(Math.random() * CHARS.length)]; }
       }
       el.textContent = out;
       if (isVerde) el.style.color = 'var(--verde)';
@@ -1051,17 +1074,10 @@ function scramble(el, delay) {
     }, 38);
   }, delay);
 }
-
-setTimeout(() => {
-  document.querySelectorAll('.scramble-line').forEach((el, i) => {
-    scramble(el, i * 160);
-  });
-}, 2200);
+setTimeout(() => { document.querySelectorAll('.scramble-line').forEach((el, i) => { scramble(el, i * 160); }); }, 2200);
 
 // SCROLL REVEAL
-const obs=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('v');obs.unobserve(e.target);}});
-},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+const obs=new IntersectionObserver(entries=>{ entries.forEach(e=>{ if(e.isIntersecting){e.target.classList.add('v');obs.unobserve(e.target);} }); },{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
 document.querySelectorAll('.r').forEach(el=>obs.observe(el));
 
 // FORMSPREE AJAX
@@ -1072,28 +1088,16 @@ form.addEventListener('submit', async e => {
   status.textContent = 'Enviando...';
   const data = new FormData(form);
   try {
-    const res = await fetch(form.action, {
-      method: 'POST', body: data,
-      headers: { 'Accept': 'application/json' }
-    });
-    if (res.ok) {
-      status.textContent = 'Mensaje enviado. Te contactamos pronto.';
-      form.reset();
-    } else {
-      status.textContent = 'Algo salió mal. Escribinos a clarioar@gmail.com';
-      status.style.color = '#E24B4A';
-    }
-  } catch {
-    status.textContent = 'Sin conexión. Intentá de nuevo.';
-    status.style.color = '#E24B4A';
-  }
+    const res = await fetch(form.action, { method: 'POST', body: data, headers: { 'Accept': 'application/json' } });
+    if (res.ok) { status.textContent = 'Mensaje enviado. Te contactamos pronto.'; form.reset(); }
+    else { status.textContent = 'Algo salió mal. Escribinos a clarioar@gmail.com'; status.style.color = '#E24B4A'; }
+  } catch { status.textContent = 'Sin conexión. Intentá de nuevo.'; status.style.color = '#E24B4A'; }
 });
 
 // CONTADOR ANIMADO
 const contadorEl = document.getElementById('contador');
 const contadorWrap = document.getElementById('contador-wrap');
 let contadorDisparado = false;
-
 const contadorObs = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting && !contadorDisparado) {
@@ -1105,55 +1109,32 @@ const contadorObs = new IntersectionObserver(entries => {
       function step(now) {
         const elapsed = now - start;
         const progress = Math.min(elapsed / duration, 1);
-        const eased = easeOutExpo(progress);
-        contadorEl.textContent = Math.round(eased * target);
+        contadorEl.textContent = Math.round(easeOutExpo(progress) * target);
         if (progress < 1) requestAnimationFrame(step);
       }
       requestAnimationFrame(step);
     }
   });
 }, { threshold: 0.3 });
-
 contadorObs.observe(contadorWrap);
 
 // CHATBOT
 const chatToggle = document.getElementById('chat-toggle');
 const chatBox = document.getElementById('chat-box');
 const chatBody = document.getElementById('chat-body');
-
 const respuestas = {
-  inicio: {
-    msg: '¡Hola! Soy CLARIO. ¿En qué puedo ayudarte?',
-    opciones: [
-      { txt: '¿Qué es CLARIO?', key: 'que' },
-      { txt: '¿Para qué sirve?', key: 'para' },
-      { txt: 'Suscribirme al newsletter', key: 'news' }
-    ]
-  },
-  que: {
-    msg: 'CLARIO es una consultora de inteligencia política mendocina. Monitoreamos medios y redes, analizamos lo que dice la gente sobre una gestión, y lo convertimos en información útil para tomar decisiones.',
-    volver: true
-  },
-  para: {
-    msg: 'Sirve para que intendentes, candidatos y equipos de comunicación entiendan en tiempo real cómo está siendo percibida su gestión. Antes de que el problema sea visible, CLARIO ya lo está midiendo.',
-    volver: true
-  },
-  news: {
-    msg: 'Podés suscribirte al newsletter de CLARIO por WhatsApp o por mail. Subí al inicio de la página y encontrás los dos botones en la sección Newsletter.',
-    volver: true,
-    accion: { txt: 'Ver opciones de suscripción', href: '#' }
-  }
+  inicio: { msg: '¡Hola! Soy CLARIO. ¿En qué puedo ayudarte?', opciones: [{ txt: '¿Qué es CLARIO?', key: 'que' },{ txt: '¿Para qué sirve?', key: 'para' },{ txt: 'Suscribirme al newsletter', key: 'news' }] },
+  que: { msg: 'CLARIO es una consultora de inteligencia política mendocina. Monitoreamos medios y redes, analizamos lo que dice la gente sobre una gestión, y lo convertimos en información útil para tomar decisiones.', volver: true },
+  para: { msg: 'Sirve para que intendentes, candidatos y equipos de comunicación entiendan en tiempo real cómo está siendo percibida su gestión. Antes de que el problema sea visible, CLARIO ya lo está midiendo.', volver: true },
+  news: { msg: 'Podés suscribirte al newsletter de CLARIO por WhatsApp o por mail. Subí al inicio de la página y encontrás los dos botones en la sección Newsletter.', volver: true }
 };
-
 function renderChat(key) {
   const data = respuestas[key];
   chatBody.innerHTML = '';
-
   const msgEl = document.createElement('div');
   msgEl.className = 'chat-msg';
   msgEl.textContent = data.msg;
   chatBody.appendChild(msgEl);
-
   if (data.opciones) {
     const ops = document.createElement('div');
     ops.className = 'chat-opciones';
@@ -1173,16 +1154,6 @@ function renderChat(key) {
     });
     chatBody.appendChild(ops);
   }
-
-  if (data.accion) {
-    const a = document.createElement('a');
-    a.href = data.accion.href;
-    a.className = 'nl-btn';
-    a.style.cssText = 'margin-top:8px;padding:12px 16px;font-size:12px;';
-    a.textContent = data.accion.txt + ' →';
-    chatBody.appendChild(a);
-  }
-
   if (data.volver) {
     const volver = document.createElement('button');
     volver.className = 'chat-volver';
@@ -1190,21 +1161,15 @@ function renderChat(key) {
     volver.addEventListener('click', () => renderChat('inicio'));
     chatBody.appendChild(volver);
   }
-
-  // re-bind cursor
   chatBody.querySelectorAll('button,a').forEach(el=>{
     el.addEventListener('mouseenter',()=>cur.classList.add('hov'));
     el.addEventListener('mouseleave',()=>cur.classList.remove('hov'));
   });
 }
-
 let chatIniciado = false;
 chatToggle.addEventListener('click', () => {
   const open = chatBox.classList.toggle('open');
-  if (open && !chatIniciado) {
-    chatIniciado = true;
-    setTimeout(() => renderChat('inicio'), 80);
-  }
+  if (open && !chatIniciado) { chatIniciado = true; setTimeout(() => renderChat('inicio'), 80); }
   chatToggle.innerHTML = open
     ? `<svg viewBox="0 0 24 24" width="22" height="22" fill="var(--fondo)"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>`
     : `<svg viewBox="0 0 24 24" width="22" height="22" fill="var(--fondo)"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>`;
